@@ -17,14 +17,14 @@
     "tile_processor": {
       "class": "ingestclient.plugins.cloudvolume.CloudVolumeTileProcessor",
       "params": {
-        "source_url": "gs://seunglab-test/test_v0/image"
+        "source_url": "gs://seunglab-test/test_v0/segmentation"
       }
     }
   },
   "database": {
     "collection": "automated_testing",
     "experiment": "test_v0",
-    "channel": "image"
+    "channel": "segmentation"
   },
   "ingest_job": {
     "resolution": 0,
@@ -35,8 +35,8 @@
       "t": [0, 1]
     },
     "tile_size": {
-      "x": 256,
-      "y": 256,
+      "x": 1024,
+      "y": 1024,
       "z": 1,
       "t": 1
     }

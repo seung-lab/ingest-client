@@ -95,22 +95,23 @@ class CloudVolumeTileProcessor(TileProcessor):
 
         """
         # Compute cutout args
+
         tile_size = self.parameters['ingest_job']['tile_size']
         bbox = Bbox( 
             (
-                tile_size["x"] * x_index + tile_size["x"],
-                tile_size["y"] * y_index + tile_size["y"],
-                z_index + tile_size["z"], 
+                tile_size["x"] * x_index,
+                tile_size["y"] * y_index,
+                tile_size["z"] * z_index, 
             ),
             (
-                tile_size["x"] * (x_index + 1) + tile_size["x"],
-                tile_size["y"] * (y_index + 1) + tile_size["y"],
-                (z_index + 1) * tile_size["z"],
+                tile_size["x"] * (x_index + 1),
+                tile_size["y"] * (y_index + 1),
+                tile_size["z"] * (z_index + 1),
             )
         )
 
         if bbox.volume() < 1:
-            data = np.zeros((tile_size['x'], tile_size['y']), dtype=np.int32, order="C")
+            data = np.zeros((tile_size['x'], tile_size['y']), dtype=np.uint16)
         else:
             data = self.cv[ bbox.to_slices() ]
 
