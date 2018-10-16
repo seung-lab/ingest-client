@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: boss-ingest
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: boss-ingest
+    spec:
+      containers:
+        - name: boss-ingest
+          image: seunglab/bossingest
+          volumeMounts:
+          - name: ingest-secrets
+            mountPath: "/root/.intern"
+            readOnly: true
+          - name: secrets
+            mountPath: /secrets
+          - name: configvol
+            mountPath: /config
+          - name: tmp
+            mountPath: "/tmp"
+            readOnly: false
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 2Gi
+          env:
+            - name: INGEST_JOB_ID
+              value: "1301"
+      volumes:
+      - name: ingest-secrets
+        secret:
+          secretName: ingest-secrets
+      - name: secrets
+        secret:
+          secretName: secrets
+      - name: tmp
+        emptyDir: { medium: "Memory" }
+      - name: configvol
+        configMap:
+          name: configvol
+          items:
+            - key: docker
+              path: docker.json
+

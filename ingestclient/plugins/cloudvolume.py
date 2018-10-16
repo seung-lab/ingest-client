@@ -111,7 +111,7 @@ class CloudVolumeTileProcessor(TileProcessor):
         )
 
         if bbox.volume() < 1:
-            data = np.zeros((tile_size['x'], tile_size['y']), dtype=np.uint16)
+            data = np.zeros((tile_size['x'], tile_size['y']), dtype=self.cv.dtype)
         else:
             data = self.cv[ bbox.to_slices() ]
 
@@ -119,6 +119,7 @@ class CloudVolumeTileProcessor(TileProcessor):
         upload_img = Image.fromarray(np.squeeze(data))
         output = six.BytesIO()
         upload_img.save(output, format="TIFF")
+        upload_img.save('./' + bbox.to_filename() + '.tiff', format='TIFF')
 
         # Send handle back
         return output
